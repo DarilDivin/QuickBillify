@@ -1,5 +1,5 @@
 import axios from '@/lib/axios'
-import { RegisterProps, UseAuthProps } from '@/types'
+import { ForgotPasswordProps, LoginProps, RegisterProps, ResetPasswordProps, UseAuthProps } from '@/types'
 import { useParams, useRouter } from "next/navigation"
 import { Dispatch, SetStateAction, useEffect } from "react"
 import useSWR from "swr"
@@ -175,15 +175,15 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: UseAuthProps = 
             })
     }
 
-    const login = async ({ setErrors, setStatus, ...props }) => {
+    const login = async ({ setErrors, setStatus, ...props }: LoginProps) => {
         await csrf()
 
-        setErrors([])
+        setErrors({})
         setStatus(null)
 
         axios
             .post('/login', props)
-            .then(() => mutate())
+            .then(() => mutate()) // Mets à jour les données de l'utilisateur en cache
             .catch(error => {
                 if (error.response.status !== 422) throw error
 
@@ -191,10 +191,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: UseAuthProps = 
             })
     }
 
-    const forgotPassword = async ({ setErrors, setStatus, email }) => {
+    const forgotPassword = async ({ setErrors, setStatus, email }: ForgotPasswordProps) => {
         await csrf()
 
-        setErrors([])
+        setErrors({})
         setStatus(null)
 
         axios
@@ -207,10 +207,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: UseAuthProps = 
             })
     }
 
-    const resetPassword = async ({ setErrors, setStatus, ...props }) => {
+    const resetPassword = async ({ setErrors, setStatus, ...props }: ResetPasswordProps) => {
         await csrf()
 
-        setErrors([])
+        setErrors({})
         setStatus(null)
 
         axios
@@ -225,7 +225,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: UseAuthProps = 
             })
     }
 
-    const resendEmailVerification = ({ setStatus }) => {
+    const resendEmailVerification = ({ setStatus }: {setStatus: Dispatch<SetStateAction<string | null>>}) => {
         axios
             .post('/email/verification-notification')
             .then(response => setStatus(response.data.status))

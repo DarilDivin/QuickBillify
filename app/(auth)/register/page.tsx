@@ -101,7 +101,6 @@ const Register = () => {
       values.password,
       values.password_confirmation
     );
-    //   console.log(name, email, password, passwordConfirmation)
   }
 
   return (
@@ -207,6 +206,7 @@ const Register = () => {
             </Form>
           </CardContent>
           <CardFooter className="flex flex-col">
+            
           </CardFooter>
         </Card>
       </div>
